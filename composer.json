@@ -1,0 +1,44 @@
+{
+	"name": "tatter/chat",
+	"description": "Embedded chat widget for CodeIgniter 4",
+	"keywords": [
+		"codeigniter",
+		"codeigniter4",
+		"chat"
+	],
+	"homepage": "https://github.com/tattersoftware/codeigniter4-chat",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Matthew Gatner",
+			"email": "mgatner@tattersoftware.com",
+			"homepage": "https://tattersoftware.com",
+			"role": "Developer"
+		}
+	],
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	],
+	"require": {
+		"php" : ">=7.2",
+		"components/jquery": "^3.3",
+		"fortawesome/font-awesome": "^5.8",
+		"twbs/bootstrap": "^4.3"
+	},
+	"require-dev": {
+		"codeigniter4/framework": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"Tatter\\Chat\\": "src"
+		}
+	},
+	"scripts": {
+		"post-update-cmd": [
+			"composer dump-autoload"
+		]
+	}
+}
