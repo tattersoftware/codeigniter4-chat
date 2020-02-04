@@ -18,25 +18,41 @@
 	],
 	"repositories": [
 		{
-			"type": "composer",
-			"url": "https://asset-packagist.org"
+			"type": "vcs",
+			"url": "https://github.com/codeigniter4/CodeIgniter4"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/lonnieezell/myth-auth"
 		}
 	],
+	"minimum-stability": "dev",
 	"require": {
 		"php" : ">=7.2",
 		"components/jquery": "^3.3",
 		"fortawesome/font-awesome": "^5.8",
-		"twbs/bootstrap": "^4.3"
+		"twbs/bootstrap": "^4.3",
+		"tatter/accounts": "dev-master"
 	},
 	"require-dev": {
-		"codeigniter4/framework": "dev-master"
+		"phpunit/phpunit" : "^7.0",
+		"mockery/mockery": "^1.0",
+		"fzaninotto/faker": "^1.9@dev",
+		"codeigniter4/codeigniter4": "dev-develop",
+		"myth/auth": "dev-develop"
 	},
 	"autoload": {
 		"psr-4": {
 			"Tatter\\Chat\\": "src"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"ModuleTests\\Support\\": "tests/_support"
+		}
+	},
 	"scripts": {
+		"test": "phpunit",
 		"post-update-cmd": [
 			"composer dump-autoload"
 		]
