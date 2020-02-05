@@ -48,7 +48,7 @@ class Participant extends Entity
 	 {
 	 	if ($account = $this->account())
 	 	{
-	 		return $account->name;
+	 		return $account->name ?? '';
 	 	}
 
 		return '';

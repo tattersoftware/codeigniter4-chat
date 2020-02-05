@@ -1,21 +1,28 @@
-<div class="card chat-conversation">
+<div class="card chat-conversation h-100">
 	<div class="card-header"><?= $conversation->name ?? 'Chat' ?></div>
 
-	<div class="card-body">
-		<div id="conversation-<?= $conversation->id ?>" class="card-body chat-messages">
+	<div class="card-body overflow-auto" style="max-height: 300px;">
+		<div id="conversation-<?= $conversation->id ?>" class="chat-messages">
 
-		<?php foreach ($conversation->messages as $message): ?>
+			<?php foreach ($conversation->messages as $message): ?>
 
-		<?= view('Tatter\Chat\Views\message', ['message' => $message]) ?>
+			<?php if ($message->participant->user_id == user_id()): ?>
 
-		<?php endforeach; ?>
+			<div class="chat-row text-right">
+				<span class="chat-message d-inline-block m-1 py-1 px-2 rounded-pill small text-white bg-primary"><?= $message->content ?></span>
+				<span class="chat-avatar d-inline-block m-1 p-2 rounded-circle text-uppercase text-white bg-secondary" data-toggle="tooltip" title="<?= $message->participant->username ?>"><?= substr($message->participant->username, 0, 2) ?></span>
+			</div>
 
-		<?php foreach ($conversation->participants as $participant): ?>
+			<?php else: ?>
 
-		<?= $participant->username ?>
+			<div class="chat-row">
+				<span class="chat-avatar d-inline-block m-1 p-2 rounded-circle text-uppercase text-white bg-secondary" data-toggle="tooltip" title="<?= $message->participant->username ?>"><?= substr($message->participant->username, 0, 2) ?></span>
+				<span class="chat-message d-inline-block m-1 py-1 px-2 rounded-pill small text-white bg-secondary"><?= $message->content ?></span>
+			</div>
+			
+			<?php endif; ?>
 
-		<?php endforeach; ?>
-
+			<?php endforeach; ?>
 		</div>
 	</div>
 

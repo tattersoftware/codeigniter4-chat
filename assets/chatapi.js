@@ -1,6 +1,10 @@
+// Initialize Bootstrap tooltips
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
-// Code from Stephan Wagner
-// https://stephanwagner.me/auto-resizing-textarea-with-vanilla-javascript
+// Auto-resize the textarea
+// Code from Stephan Wagner; https://stephanwagner.me/auto-resizing-textarea-with-vanilla-javascript
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('[data-autoresize]').forEach(function (element) {
     element.style.boxSizing = 'border-box';
