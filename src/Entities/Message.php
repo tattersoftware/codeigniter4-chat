@@ -1,6 +1,8 @@
 <?php namespace Tatter\Chat\Entities;
 
 use CodeIgniter\Entity;
+use Tatter\Chat\Entities\Participant;
+use Tatter\Chat\Models\ParticipantModel;
 
 class Message extends Entity
 {
@@ -9,4 +11,20 @@ class Message extends Entity
 		'conversation_id' => 'int',
 		'participant_id'  => 'int',
 	];
+
+	/**
+	 * Loads and returns the participant who sent this message.
+	 * Ideally this is already injected by the Conversation.
+	 *
+	 * @return Account
+	 */
+	 protected function getParticipant(): ?Participant
+	 {
+	 	if (empty($this->attributes['participant']))
+	 	{
+			$this->attributes['participant'] = (new ParticipantModel())->find($this->attributes['participant_id']);
+	 	}
+
+		return $this->attributes['participant'];
+	}
 }

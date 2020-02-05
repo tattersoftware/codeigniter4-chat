@@ -33,7 +33,7 @@ class Participant extends Entity
 	 {
 	 	if ($account = $this->account())
 	 	{
-	 		return $account->username;
+	 		return (string) $account->username;
 	 	}
 
 		return 'Chatter #' . $this->attributes['id'];
@@ -100,7 +100,7 @@ class Participant extends Entity
 	//--------------------------------------------------------------------
 
 	/**
-	 * Loads and returns the user account for thie participant
+	 * Loads and returns the user account for this participant
 	 *
 	 * @return Account
 	 */

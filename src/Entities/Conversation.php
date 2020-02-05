@@ -1,6 +1,7 @@
 <?php namespace Tatter\Chat\Entities;
 
 use CodeIgniter\Entity;
+use Tatter\Chat\Entities\Message;
 use Tatter\Chat\Entities\Participant;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
@@ -27,16 +28,47 @@ class Conversation extends Entity
 	 }
 
 	/**
-	 * Gets the messages for this conversation
+	 * Gets the messages for this conversation.
+	 * Preloads the Participant for each message.
 	 *
 	 * @return array of Messages
 	 */
 	 public function getMessages(): array
 	 {
-	 	return (new MessageModel())
-	 		->where('conversation_id', $this->attributes['id'])
-	 		->orderBy('created_at', 'asc')
-	 		->findAll() ?? [];
+	 	// Get the builder from the message model
+	 	$builder = (new MessageModel())->builder();
+
+		$rows = $builder
+			->select('chat_messages.*, chat_participants.user_id')
+			->join('chat_participants', 'chat_messages.participant_id = chat_participants.id', 'left')
+			->where('chat_messages.conversation_id', $this->attributes['id'])
+	 		->orderBy('chat_messages.created_at', 'asc')
+			->get()->getResultArray();
+
+		if (empty($rows))
+		{
+			return [];
+		}
+
+		// Create the Message and Participant entities from each row
+		$messages = [];
+		foreach ($rows as $row)
+		{
+			$participant = new Participant([
+				'id'              => $row['participant_id'],
+				'conversation_id' => $row['conversation_id'],
+				'user_id'         => $row['user_id'],
+			]);
+
+			unset($row['user_id']);
+
+			$message = new Message($row);
+			$message->participant = $participant;
+			
+			$messages[] = $message;
+		}
+		
+		return $messages;
 	 }
 
 	/**

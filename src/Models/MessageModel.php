@@ -10,5 +10,5 @@ class MessageModel extends Model
 	protected $useTimestamps  = true;
 	protected $useSoftDeletes = true;
 	protected $skipValidation = true;
-	protected $allowedFields  = ['conversation_id', 'user_id', 'content'];
+	protected $allowedFields  = ['conversation_id', 'participant_id', 'content'];
 }

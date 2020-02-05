@@ -39,7 +39,7 @@ class ConversationTest extends \ModuleTests\Support\ModuleTestCase
 
 	public function testSayAddsMessage()
 	{
-		$content = 'hello world';
+		$content = self::$faker->sentence;
 
 		$user = (new UserModel())->first();
 		$participant = $this->conversation->addUser($user->id);
@@ -49,5 +49,19 @@ class ConversationTest extends \ModuleTests\Support\ModuleTestCase
 		$messages = $this->conversation->messages;
 
 		$this->assertEquals($content, $messages[0]->content);
+	}
+
+	public function testMessagesHaveParticipants()
+	{
+		$content = self::$faker->sentence;
+
+		$user = (new UserModel())->first();
+		$participant = $this->conversation->addUser($user->id);
+
+		$participant->say($content);
+
+		$messages = $this->conversation->messages;
+
+		$this->assertEquals($user->username, $messages[0]->participant->username);
 	}
 }

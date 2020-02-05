@@ -39,7 +39,7 @@ class ParticipantTest extends \ModuleTests\Support\ModuleTestCase
 
 	public function testSayAddsMessage()
 	{
-		$content = 'hello world';
+		$content = self::$faker->sentence;
 
 		$this->participant->say($content);
 

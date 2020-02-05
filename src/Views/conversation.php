@@ -2,11 +2,17 @@
 	<div class="card-header"><?= $conversation->name ?? 'Chat' ?></div>
 
 	<div class="card-body">
-		<div id="conversation-<?= $conversation->id ?>" class="card-body chat-wrapper">
+		<div id="conversation-<?= $conversation->id ?>" class="card-body chat-messages">
 
 		<?php foreach ($conversation->messages as $message): ?>
 
 		<?= view('Tatter\Chat\Views\message', ['message' => $message]) ?>
+
+		<?php endforeach; ?>
+
+		<?php foreach ($conversation->participants as $participant): ?>
+
+		<?= $participant->username ?>
 
 		<?php endforeach; ?>
 
