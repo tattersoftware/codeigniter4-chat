@@ -32,7 +32,8 @@
 		"php" : ">=7.2",
 		"components/jquery": "^3.3",
 		"twbs/bootstrap": "^4.3",
-		"tatter/accounts": "dev-master"
+		"tatter/accounts": "^1.0",
+		"tatter/assets": "^2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit" : "^7.0",
