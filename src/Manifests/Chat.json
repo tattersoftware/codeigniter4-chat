@@ -1,0 +1,9 @@
+{
+	"source": "tatter/chat/assets",
+	"destination": "vendor/chat",
+	"resources": [
+		{
+			"source": "."
+		}
+	]
+}

@@ -4,7 +4,8 @@
 	"keywords": [
 		"codeigniter",
 		"codeigniter4",
-		"chat"
+		"chat",
+		"bootstrap"
 	],
 	"homepage": "https://github.com/tattersoftware/codeigniter4-chat",
 	"license": "MIT",
@@ -30,7 +31,6 @@
 	"require": {
 		"php" : ">=7.2",
 		"components/jquery": "^3.3",
-		"fortawesome/font-awesome": "^5.8",
 		"twbs/bootstrap": "^4.3",
 		"tatter/accounts": "dev-master"
 	},
