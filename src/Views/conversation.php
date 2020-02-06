@@ -20,7 +20,7 @@
 				<textarea class="flex-fill" name="content" data-autoresize rows="1" placeholder="Type your message..." aria-describedby="button-send"></textarea>
 
 				<div class="input-group-append">
-					<input type="submit" class="btn btn-outline-secondary" id="button-send" value="Send">
+					<input type="submit" class="btn btn-outline-dark" id="button-send" value="Send">
 				</div>
 			</div>
 		</form>
