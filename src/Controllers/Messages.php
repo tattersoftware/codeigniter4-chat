@@ -29,11 +29,14 @@ class Messages extends ResourceController
 		}
 		
 		// Say it
-		if (! $participant->say($this->request->getPost('content')))
+		if (! $messageId = $participant->say($this->request->getPost('content')))
 		{
 			return;
 		}
-		
-		return $this->respondCreated(null, 'success');
+
+		// Respond with the pre-formatted message to display
+		helper('auth');
+		$message = $this->model->find($messageId);
+		return $this->respondCreated(view('Tatter\Chat\Views\message', ['message' => $message]), 'message created');
 	}
 }

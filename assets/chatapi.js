@@ -16,3 +16,21 @@ document.addEventListener("DOMContentLoaded", function() {
     element.removeAttribute('data-autoresize');
   });
 });
+
+// Scroll chat message wrappers to the bottom
+$(".card-body").scrollTop(10000);
+
+function sendMessage(formElement) {
+	const url = siteUrl + 'chatapi/messages';
+	const data = new URLSearchParams(new FormData(formElement));
+
+	fetch(url, {
+		method: 'post',
+		body: data,
+	})
+	.then((response) => {
+		if (response.status == 201) {
+			location.reload();
+		}
+	});
+}
