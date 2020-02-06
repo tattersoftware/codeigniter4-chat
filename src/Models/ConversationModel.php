@@ -10,5 +10,7 @@ class ConversationModel extends Model
 	protected $useTimestamps  = true;
 	protected $useSoftDeletes = true;
 	protected $skipValidation = false;
-	protected $allowedFields  = ['name', 'icon', 'summary', 'private', 'direct'];
+
+	protected $allowedFields   = ['title', 'uid', 'private', 'direct'];
+	protected $validationRules = ['uid' => 'required'];
 }

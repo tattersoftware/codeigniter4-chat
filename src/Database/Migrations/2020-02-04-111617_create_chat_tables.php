@@ -8,9 +8,8 @@ class CreateChatTables extends Migration
 	{
 		/* Conversations */
 		$fields = [
-			'name'           => ['type' => 'varchar', 'constraint' => 255],
-			'icon'           => ['type' => 'varchar', 'constraint' => 255],
-			'summary'        => ['type' => 'varchar', 'constraint' => 255],
+			'title'          => ['type' => 'varchar', 'constraint' => 255],
+			'uid'            => ['type' => 'varchar', 'constraint' => 255],
 			'private'        => ['type' => 'boolean', 'default' => 0],
 			'direct'         => ['type' => 'boolean', 'default' => 0],
 			'created_at'     => ['type' => 'datetime', 'null' => true],
@@ -22,7 +21,6 @@ class CreateChatTables extends Migration
 		$this->forge->addField($fields);
 
 		$this->forge->addUniqueKey('uid');
-		$this->forge->addKey('name');
 		$this->forge->addKey(['deleted_at', 'id']);
 		$this->forge->addKey('created_at');
 		

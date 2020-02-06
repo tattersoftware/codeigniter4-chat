@@ -103,9 +103,8 @@ class ModuleTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	protected function generateConversation(): array
 	{
 		return [
-			'name'    => self::$faker->company,
-			'icon'    => $this->generateIcon(),
-			'summary' => self::$faker->sentence,
+			'title' => self::$faker->company,
+			'uid'   => $this->generateIcon(),
 		];
 	}
 
