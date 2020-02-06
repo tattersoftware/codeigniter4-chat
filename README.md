@@ -6,10 +6,12 @@ Embedded chat widget for CodeIgniter 4
 
 1. Install with Composer: `> composer require tatter/chat`
 2. Update the database: `> php spark migrate -all`
+3. Publish the asset files: `> php spark assets:publish`
+4. Add a chat to any view: `<?= chat('my-first-chat') ?>`
 
 ## Features
 
-**Chat** allows developers to add a lightweight chat client to any page.
+**Chat** allows developers to add a lightweight Bootstrap-style chat client to any page.
 
 ## Installation
 
@@ -24,10 +26,64 @@ Once the files are downloaded and included in the autoload, run any library migr
 to ensure the database is setup correctly:
 * `> php spark migrate -all`
 
+### Assets
+
+**Chat** has a JS file and a CSS file, as well as dependencies, that need to be included
+with any view that has a conversation on it. Included are manifest files to auto-publish
+your assets using **Tatter\Assets** with one simple command: `spark assets:publish`. If you
+did not install via Composer or you want to publish the assets yourself, move the files from
+the library's **assets/** directory into your **public/** directory. You can then include them
+in your `<head>` tag or use the **Assets** config file to load them for certain routes:
+
+```
+	public $routes = [
+		'' => [
+			'vendor/bootstrap/bootstrap.min.css',
+			'vendor/bootstrap/bootstrap.bundle.min.js',
+		],
+		'products/show' => [
+			'vendor/chat/chat.css',
+			'vendor/chat/chat.js',
+		],
+```
+
+If you install assets manually be sure to include Bootstrap.
+
 ## Configuration (optional)
 
 The library's default behavior can be altered by extending its config file. Copy
 **examples/Chat.php** to **app/Config/** and follow the instructions
 in the comments. If no config file is found in **app/Config** the library will use its own.
 
+### Accounts
+
+**Chat** uses `Tatter\Accounts` to determine participants username and display name. By default
+the **Myth:Auth** handler is active, but you can specify any handler (see
+[instructions on GitHub](https://github.com/tattersoftware/codeigniter4-accounts)) or make
+your own.
+
 ## Usage
+
+The easiest way to start a chat is with the helper. Load the helper file (`helper('chat')`)
+and then use the `chat($uid, $title)` command wherever you would use a partial view:
+
+```
+<div id="main">
+	<h3>Yellow Widgets</h3>
+	<p>Main product info here!</p>
+	
+	<aside>
+		<?= chat('product-7', 'Live Chat') ?>
+	</aside>
+...
+```
+
+The parameters to `chat()` are optional, and excluding them will load a one-time chat with
+a random UID (e.g. for a one-time site visitor).
+
+## Extending
+
+Conversations are stored and loaded from the database with the `ConversationModel`, and
+most of the logic is handled by the Entities. For example, use a `Conversation` entity can
+`$conversation->addUser($userId)` to join or refresh a user and get back a `Participant`.
+A `Participant` can `$participant->say('hello world')` to add a `Message`.
