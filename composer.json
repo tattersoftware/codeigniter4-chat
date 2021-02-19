@@ -1,5 +1,6 @@
 {
 	"name": "tatter/chat",
+	"type": "library",
 	"description": "Embedded chat widget for CodeIgniter 4",
 	"keywords": [
 		"codeigniter",
@@ -17,6 +18,30 @@
 			"role": "Developer"
 		}
 	],
+	"require": {
+		"php": "^7.3 || ^8.0",
+		"components/jquery": "^3.3",
+		"tatter/assets": "^2.0",
+		"twbs/bootstrap": "^4.3"
+	},
+	"require-dev": {
+		"codeigniter4/codeigniter4": "dev-develop",
+		"myth/auth": "dev-develop",
+		"tatter/tools": "^1.6"
+	},
+	"autoload": {
+		"psr-4": {
+			"Tatter\\Chat\\": "src"
+		},
+		"exclude-from-classmap": [
+			"**/Database/Migrations/**"
+		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ModuleTests\\Support\\": "tests/_support"
+		}
+	},
 	"repositories": [
 		{
 			"type": "vcs",
@@ -28,34 +53,14 @@
 		}
 	],
 	"minimum-stability": "dev",
-	"require": {
-		"php" : ">=7.2",
-		"components/jquery": "^3.3",
-		"twbs/bootstrap": "^4.3",
-		"tatter/accounts": "^1.0",
-		"tatter/assets": "^2.0"
-	},
-	"require-dev": {
-		"phpunit/phpunit" : "^7.0",
-		"mockery/mockery": "^1.0",
-		"fzaninotto/faker": "^1.9@dev",
-		"codeigniter4/codeigniter4": "dev-develop",
-		"myth/auth": "dev-develop"
-	},
-	"autoload": {
-		"psr-4": {
-			"Tatter\\Chat\\": "src"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"ModuleTests\\Support\\": "tests/_support"
-		}
-	},
+	"prefer-stable": true,
 	"scripts": {
-		"test": "phpunit",
 		"post-update-cmd": [
 			"composer dump-autoload"
-		]
+		],
+		"analyze": "phpstan analyze",
+		"mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
+		"style": "phpcbf --standard=./vendor/codeigniter4/codeigniter4-standard/CodeIgniter4 tests/ src/",
+		"test": "phpunit"
 	}
 }
