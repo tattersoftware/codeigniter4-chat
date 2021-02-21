@@ -5,6 +5,7 @@ use Tatter\Chat\Entities\Message;
 use Tatter\Chat\Entities\Participant;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
+use RuntimeException;
 
 class Conversation extends Entity
 {
@@ -19,13 +20,13 @@ class Conversation extends Entity
 	 *
 	 * @return array of Participants
 	 */
-	 public function getParticipants(): array
-	 {
-	 	return (new ParticipantModel())
-	 		->where('conversation_id', $this->attributes['id'])
-	 		->orderBy('created_at', 'asc')
-	 		->findAll() ?? [];
-	 }
+	public function getParticipants(): array
+	{
+		return model(ParticipantModel::class)
+			->where('conversation_id', $this->attributes['id'])
+			->orderBy('created_at', 'asc')
+			->findAll() ?? [];
+	}
 
 	/**
 	 * Gets the messages for this conversation.
@@ -33,16 +34,16 @@ class Conversation extends Entity
 	 *
 	 * @return array of Messages
 	 */
-	 public function getMessages(): array
-	 {
-	 	// Get the builder from the message model
-	 	$builder = (new MessageModel())->builder();
+	public function getMessages(): array
+	{
+		// Get the builder from the message model
+		$builder = model(MessageModel::class)->builder();
 
 		$rows = $builder
 			->select('chat_messages.*, chat_participants.user_id')
 			->join('chat_participants', 'chat_messages.participant_id = chat_participants.id', 'left')
 			->where('chat_messages.conversation_id', $this->attributes['id'])
-	 		->orderBy('chat_messages.created_at', 'asc')
+			->orderBy('chat_messages.created_at', 'asc')
 			->get()->getResultArray();
 
 		if (empty($rows))
@@ -69,45 +70,37 @@ class Conversation extends Entity
 		}
 		
 		return $messages;
-	 }
+	}
 
 	/**
 	 * Adds a user to this conversation.
 	 *
 	 * @return Participant|null
 	 */
-	 public function addUser(int $userId): ?Participant
-	 {
-		$participants = new ParticipantModel();
-
+	public function addUser(int $userId): ?Participant
+	{
 		// Build the row
-	 	$row = [
-	 		'conversation_id' => $this->attributes['id'],
-	 		'user_id'         => $userId,
-	 	];
+		$row = [
+			'conversation_id' => $this->attributes['id'],
+			'user_id'         => $userId,
+		];
 
 		// Check for an existing participant
-		if ($participant = $participants->where($row)->first())
+		if ($participant = model(ParticipantModel::class)->where($row)->first())
 		{
 			// Bump the last active date and return the entity
 			return $participant->active();
 		}
 
 		// Create the new participant
-		if ($id = $participants->insert($row))
+		if ($id = model(ParticipantModel::class)->insert($row))
 		{
-			return $participants->find($id);
+			return model(ParticipantModel::class)->find($id);
 		}
 
 		// Something went wrong
 		$error = "Unable to add user {$userId} to conversation: " . $this->attributes['id'];
 		log_message('error', $error);
-
-		if (! config('Chat')->silent)
-		{
-			throw new \RuntimeException($error);
-		}
-
-		return null;
-	 }
+		throw new RuntimeException($error);
+	}
 }

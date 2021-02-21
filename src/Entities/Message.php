@@ -46,7 +46,7 @@ class Message extends Entity
 	{
 		if (empty($this->attributes['participant']))
 		{
-			$this->attributes['participant'] = (new ParticipantModel())->find($this->attributes['participant_id']);
+			$this->attributes['participant'] = model(ParticipantModel::class)->find($this->attributes['participant_id']);
 		}
 
 		return $this->attributes['participant'];
