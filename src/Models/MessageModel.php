@@ -25,7 +25,7 @@ class MessageModel extends Model
 			->select('chat_messages.*, chat_participants.updated_at')
 			->join('chat_participants',
 				'chat_messages.conversation_id = chat_participants.conversation_id AND user_id = ' . $userId)
-			->where("chat_messages.created_at > {$this->db->DBPrefix}chat_participants.updated_at")
+			->where('chat_messages.created_at > chat_participants.updated_at')
 			->get()->getCustomResultObject($this->returnType);
 
 		return $result ?? [];

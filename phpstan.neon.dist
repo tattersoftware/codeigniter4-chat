@@ -12,12 +12,13 @@ parameters:
 	ignoreErrors:
 		- '#Call to an undefined static method Config\\Services::[A-Za-z]+\(\)#'
 		- '#Cannot access property [\$a-z_]+ on (array|object)#'
-		- '#Unsafe usage of new static\(\)*#'
+		- '#Cannot call method [\$A-Za-z_]+\(\) on (array|object)#'
 	universalObjectCratesClasses:
 		- CodeIgniter\Entity
 		- Faker\Generator
 	scanDirectories:
 		- vendor/codeigniter4/codeigniter4/system/Helpers
+		- vendor/myth/auth/src/Helpers
 	dynamicConstantNames:
 		- APP_NAMESPACE
 		- CI_DEBUG

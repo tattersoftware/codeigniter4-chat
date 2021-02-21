@@ -54,7 +54,14 @@ class Participant extends Entity
 	 */
 	public function getInitials(): string
 	{
-		return $this->getUser()->getInitials() ?? 'XX';
+		$names  = explode(' ', $this->getName());
+		$string = '';
+		foreach ($names as $name)
+		{
+			$string .= $name[0];
+		}
+
+		return $string;
 	}
 
 	//--------------------------------------------------------------------

@@ -4,6 +4,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use Tatter\Chat\Models\ConversationModel;
 use Tatter\Chat\Models\MessageModel;
+use RuntimeException;
 
 class Messages extends ResourceController
 {
