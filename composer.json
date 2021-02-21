@@ -22,6 +22,7 @@
 		"php": "^7.3 || ^8.0",
 		"components/jquery": "^3.3",
 		"tatter/assets": "^2.0",
+		"tatter/users": "^1.0",
 		"twbs/bootstrap": "^4.3"
 	},
 	"require-dev": {
@@ -39,7 +40,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"ModuleTests\\Support\\": "tests/_support"
+			"Tests\\Support\\": "tests/_support"
 		}
 	},
 	"repositories": [
@@ -55,9 +56,6 @@
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"scripts": {
-		"post-update-cmd": [
-			"composer dump-autoload"
-		],
 		"analyze": "phpstan analyze",
 		"mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
 		"style": "phpcbf --standard=./vendor/codeigniter4/codeigniter4-standard/CodeIgniter4 tests/ src/",
