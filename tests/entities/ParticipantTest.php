@@ -1,49 +1,62 @@
 <?php
 
 use Myth\Auth\Models\UserModel;
+use Tatter\Chat\Entities\Conversation;
+use Tatter\Chat\Entities\Participant;
 use Tatter\Chat\Models\ConversationModel;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
+use Tests\Support\ModuleTestCase;
 
-class ParticipantTest extends \ModuleTests\Support\ModuleTestCase
+class ParticipantTest extends ModuleTestCase
 {
+	/**
+	 * A generated Conversation
+	 *
+	 * @var Conversation
+	 */
+	private $conversation;
+
+	/**
+	 * A generated Participant
+	 *
+	 * @var Participant
+	 */
+	private $participant;
+
+	/**
+	 * Create a mock Conversation with a Participant
+	 */
 	public function setUp(): void
 	{
 		parent::setUp();
 
-		// Create a mock conversation
-		$conversations = new ConversationModel();
-
-		$id = $conversations->insert($this->generateConversation());
-
-		$this->conversation = $conversations->find($id);
+		$this->conversation = fake(ConversationModel::class);
 
 		// Add a participant
-		$this->model = new ParticipantModel();
-
-		$user = (new UserModel())->first();
-		$id   = $this->model->insert([
+		$user = model(UserModel::class)->first();
+		$id   = model(ParticipantModel::class)->insert([
 			'conversation_id' => $this->conversation->id,
 			'user_id'         => $user->id,
 		]);
 
-		$this->participant = $this->model->find($id);
+		$this->participant = model(ParticipantModel::class)->find($id);
 	}
 
 	public function testUsernameComesFromAccount()
 	{
-		$user = (new UserModel())->first();
+		$user = model(UserModel::class)->first();
 
 		$this->assertEquals($user->username, $this->participant->username);
 	}
 
 	public function testSayAddsMessage()
 	{
-		$content = self::$faker->sentence;
+		$content = 'All your base';
 
 		$this->participant->say($content);
 
-		$messages = (new MessageModel())->findAll();
+		$messages = model(MessageModel::class)->findAll();
 
 		$this->assertEquals($content, $messages[0]->content);
 	}

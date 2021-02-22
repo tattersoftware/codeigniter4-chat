@@ -1,23 +1,35 @@
 <?php
 
 use Myth\Auth\Models\UserModel;
+use Tatter\Chat\Entities\Conversation;
+use Tatter\Chat\Entities\Message;
 use Tatter\Chat\Models\ConversationModel;
 use Tatter\Chat\Models\MessageModel;
+use Tests\Support\ModuleTestCase;
 
-class MessageModelTest extends \ModuleTests\Support\ModuleTestCase
+class MessageModelTest extends ModuleTestCase
 {
+	/**
+	 * @var MessageModel
+	 */
+	private $model;
+
+	/**
+	 * A generated Conversation
+	 *
+	 * @var Conversation
+	 */
+	private $conversation;
+
+	/**
+	 * Set up the model and create a mock conversation
+	 */
 	public function setUp(): void
 	{
 		parent::setUp();
 
-		$this->model = new MessageModel();
-		
-		// Create a mock conversation
-		$conversations = new ConversationModel();
-
-		$id = $conversations->insert($this->generateConversation());
-
-		$this->conversation = $conversations->find($id);
+		$this->model        = new MessageModel();
+		$this->conversation = fake(ConversationModel::class);
 	}
 
 	public function testNoUnreadReturnsArray()
@@ -29,7 +41,7 @@ class MessageModelTest extends \ModuleTests\Support\ModuleTestCase
 
 	public function testUnreadReturnsMessages()
 	{
-		$users   = (new UserModel())->findAll();
+		$users = model(UserModel::class)->findAll();
 
 		$participant1 = $this->conversation->addUser($users[0]->id);
 		$participant2 = $this->conversation->addUser($users[1]->id);
@@ -37,16 +49,16 @@ class MessageModelTest extends \ModuleTests\Support\ModuleTestCase
 		// Delay so the timestamps are different
 		sleep(1);
 
-		$participant1->say(self::$faker->sentence);
+		$participant1->say('All your base');
 
 		$result = $this->model->findUserUnread($participant2->user_id);
 
-		$this->assertInstanceOf('Tatter\Chat\Entities\Message', $result[0]);
+		$this->assertInstanceOf(Message::class, $result[0]);
 	}
 
 	public function testUnreadReturnsIgnoresUnjoined()
 	{
-		$users   = (new UserModel())->findAll();
+		$users = model(UserModel::class)->findAll();
 
 		$participant1 = $this->conversation->addUser($users[0]->id);
 		$participant2 = $this->conversation->addUser($users[1]->id);
@@ -54,17 +66,13 @@ class MessageModelTest extends \ModuleTests\Support\ModuleTestCase
 		// Delay so the timestamps are different
 		sleep(1);
 
-		$participant1->say(self::$faker->sentence);
+		$participant1->say('...are belong to us');
 
 		// Create another conversation
-		$conversations = new ConversationModel();
-
-		$id = $conversations->insert($this->generateConversation());
-
-		$conversation = $conversations->find($id);
+		$conversation = fake(ConversationModel::class);
 
 		$participant1 = $conversation->addUser($users[0]->id);
-		$participant1->say(self::$faker->sentence);
+		$participant1->say('Somebody set us up the bomb!');
 
 		$result = $this->model->findUserUnread($participant2->user_id);
 
@@ -78,26 +86,21 @@ class MessageModelTest extends \ModuleTests\Support\ModuleTestCase
 		$participant1 = $this->conversation->addUser($users[0]->id);
 		$participant2 = $this->conversation->addUser($users[1]->id);
 
-		$participant1->say(self::$faker->sentence);
-		$participant2->say(self::$faker->sentence);
+		$participant1->say('All your base');
+		$participant2->say('...are belong to us');
 		sleep(1);
-		$participant1->say(self::$faker->sentence);
+		$participant1->say('Somebody set us up the bomb!');
 
 		// Create another conversation
-		$conversations = new ConversationModel();
-
-		$id = $conversations->insert($this->generateConversation());
-
-		$conversation = $conversations->find($id);
+		$conversation = fake(ConversationModel::class);
 
 		$participant1 = $conversation->addUser($users[0]->id);
 		$participant2 = $conversation->addUser($users[1]->id);
 		sleep(1);
-		$participant1->say(self::$faker->sentence);
+		$participant1->say('Somebody set us up the bomb!');
 
 		$result = $this->model->findUserUnread($participant2->user_id);
 
 		$this->assertCount(2, $result);
 	}
-
 }
