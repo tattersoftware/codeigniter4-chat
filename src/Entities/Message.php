@@ -48,11 +48,11 @@ class Message extends Entity
 	 */
 	protected function getParticipant(): ?Participant
 	{
-		if (is_null($this->participant['participant']))
+		if (is_null($this->participant))
 		{
-			$this->attributes['participant'] = model(ParticipantModel::class)->find($this->attributes['participant_id']);
+			$this->participant = model(ParticipantModel::class)->find($this->attributes['participant_id']);
 		}
 
-		return $this->attributes['participant'];
+		return $this->participant;
 	}
 }
