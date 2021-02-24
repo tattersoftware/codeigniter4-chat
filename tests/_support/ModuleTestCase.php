@@ -1,9 +1,12 @@
 <?php namespace Tests\Support;
 
-use CodeIgniter\Test\CIDatabaseTestCase;
+use CodeIgniter\Test\CIUnitTestCase;
+use Tests\Support\Database\Seeds\MythSeeder;
 
-class ModuleTestCase extends CIDatabaseTestCase
+class ModuleTestCase extends CIUnitTestCase
 {
+	use \CodeIgniter\Test\DatabaseTestTrait;
+
 	/**
 	 * Should the db be refreshed before test?
 	 *
@@ -17,7 +20,7 @@ class ModuleTestCase extends CIDatabaseTestCase
 	 *
 	 * @var string|array
 	 */
-	protected $seed = 'Tests\Support\Database\Seeds\MythSeeder';
+	protected $seed = MythSeeder::class;
 
 	/**
 	 * The namespace(s) to help us find the migration classes.

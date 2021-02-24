@@ -32,7 +32,7 @@ class Conversation extends Entity
 	 * Gets the messages for this conversation.
 	 * Preloads the Participant for each message.
 	 *
-	 * @return array of Messages
+	 * @return Message[]
 	 */
 	public function getMessages(): array
 	{
@@ -64,7 +64,7 @@ class Conversation extends Entity
 			unset($row['user_id']);
 
 			$message = new Message($row);
-			$message->participant = $participant;
+			$message->setParticipant($participant);
 			
 			$messages[] = $message;
 		}

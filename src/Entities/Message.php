@@ -41,6 +41,19 @@ class Message extends Entity
 	}
 	
 	/**
+	 * Injects the Participant. Used to eager load
+	 * batches of Messages.
+	 *
+	 * @param Participant|null $participant
+	 *
+	 * @return void
+	 */
+	public function setParticipant(Participant $participant = null): void
+	{
+		$this->participant = $participant;
+	}
+	
+	/**
 	 * Loads and returns the participant who sent this message.
 	 * Ideally this is already injected by the Conversation.
 	 *

@@ -1,12 +1,13 @@
 <?php namespace Tatter\Chat\Models;
 
 use CodeIgniter\Model;
+use Tatter\Chat\Entities\Message;
 
 class MessageModel extends Model
 {
 	protected $table          = 'chat_messages';
 	protected $primaryKey     = 'id';
-	protected $returnType     = 'Tatter\Chat\Entities\Message';
+	protected $returnType     = Message::class;
 	protected $useTimestamps  = true;
 	protected $useSoftDeletes = true;
 	protected $skipValidation = true;
@@ -17,7 +18,7 @@ class MessageModel extends Model
 	 *
 	 * @param int $userId  ID of the user to match
 	 *
-	 * @return array of Messages
+	 * @return Message[]
 	 */
 	public function findUserUnread(int $userId): array
 	{
