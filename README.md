@@ -49,17 +49,12 @@ in your `<head>` tag or use the **Assets** config file to load them for certain 
 
 If you install assets manually be sure to include Bootstrap.
 
-## Configuration (optional)
+### Authentication
 
-The library's default behavior can be altered by extending its config file. Copy
-**examples/Chat.php** to **app/Config/** and follow the instructions
-in the comments. If no config file is found in **app/Config** the library will use its own.
-
-### Accounts
-
-**Chat** uses `Tatter\Accounts` to determine participants username and display name. By default
-the **Myth:Auth** handler is active, but you can specify any handler (see
-[instructions on GitHub](https://github.com/tattersoftware/codeigniter4-accounts)) or make
+**Chat** uses `Tatter\Users` to determine participants username and display name. You must
+be sure to include a package that provides `codeigniter4/authentication-implementation`,
+like **Myth:Auth** or make your own (see [Authentication](https://codeigniter4.github.io/CodeIgniter4/extending/authentication.html)
+for framework requirements).
 your own.
 
 ## Usage

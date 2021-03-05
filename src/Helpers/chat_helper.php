@@ -14,8 +14,14 @@ if (! function_exists('chat'))
 	 */
 	function chat($uid = null, $title = null)
 	{
+		// Verify authentication
+		if (! function_exists('user_id'))
+		{
+			throw new RuntimeException('Authentication system failure');
+		}
+
 		// Get the current user
-		if (! $userId = session(config('Chat')->userSource))
+		if (! $userId = user_id())
 		{
 			return '<p><em>You must be logged in to chat!</em></p>';
 		}

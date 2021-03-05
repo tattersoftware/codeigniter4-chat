@@ -13,6 +13,13 @@ class Message extends Entity
 	];
 
 	/**
+	 * Stored copy of the sending Participant.
+	 *
+	 * @var Participant|null
+	 */
+	private $participant;
+
+	/**
 	 * Returns the message content with optional formatting.
 	 *
 	 * @return string
@@ -23,32 +30,42 @@ class Message extends Entity
 		{
 			case 'html':
 				return nl2br(strip_tags($this->attributes['content']));
-			break;
 
 			case 'json':
 				return json_encode($this->attributes['content']);
-			break;
 
 			case 'raw':
 			default:
 				return $this->attributes['content'];
-			break;
 		}
+	}
+	
+	/**
+	 * Injects the Participant. Used to eager load
+	 * batches of Messages.
+	 *
+	 * @param Participant|null $participant
+	 *
+	 * @return void
+	 */
+	public function setParticipant(Participant $participant = null): void
+	{
+		$this->participant = $participant;
 	}
 	
 	/**
 	 * Loads and returns the participant who sent this message.
 	 * Ideally this is already injected by the Conversation.
 	 *
-	 * @return Account
+	 * @return Participant
 	 */
 	protected function getParticipant(): ?Participant
 	{
-		if (empty($this->attributes['participant']))
+		if (is_null($this->participant))
 		{
-			$this->attributes['participant'] = (new ParticipantModel())->find($this->attributes['participant_id']);
+			$this->participant = model(ParticipantModel::class)->find($this->attributes['participant_id']);
 		}
 
-		return $this->attributes['participant'];
+		return $this->participant;
 	}
 }

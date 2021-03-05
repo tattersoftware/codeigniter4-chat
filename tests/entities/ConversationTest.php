@@ -1,23 +1,28 @@
 <?php
 
 use Myth\Auth\Models\UserModel;
+use Tatter\Chat\Entities\Conversation;
 use Tatter\Chat\Models\ConversationModel;
 use Tatter\Chat\Models\ParticipantModel;
+use Tests\Support\ModuleTestCase;
 
-class ConversationTest extends \ModuleTests\Support\ModuleTestCase
+class ConversationTest extends ModuleTestCase
 {
+	/**
+	 * A generated Conversation
+	 *
+	 * @var Conversation
+	 */
+	private $conversation;
+
+	/**
+	 * Create a mock conversation
+	 */
 	public function setUp(): void
 	{
 		parent::setUp();
 
-		$this->model = new ConversationModel();
-		
-		// Create a mock conversation
-		$conversations = new ConversationModel();
-
-		$id = $conversations->insert($this->generateConversation());
-
-		$this->conversation = $conversations->find($id);
+		$this->conversation = fake(ConversationModel::class);
 	}
 
 	public function testStartsWithoutParticipants()
@@ -27,8 +32,7 @@ class ConversationTest extends \ModuleTests\Support\ModuleTestCase
 
 	public function testAddUserCreatesParticipant()
 	{
-		$user = (new UserModel())->first();
-
+		$user = model(UserModel::class)->first();
 		$this->conversation->addUser($user->id);
 
 		$participants = $this->conversation->participants;
@@ -39,11 +43,10 @@ class ConversationTest extends \ModuleTests\Support\ModuleTestCase
 
 	public function testSayAddsMessage()
 	{
-		$content = self::$faker->sentence;
+		$content = 'All your base';
+		$user    = model(UserModel::class)->first();
 
-		$user = (new UserModel())->first();
 		$participant = $this->conversation->addUser($user->id);
-
 		$participant->say($content);
 
 		$messages = $this->conversation->messages;
@@ -53,11 +56,10 @@ class ConversationTest extends \ModuleTests\Support\ModuleTestCase
 
 	public function testMessagesHaveParticipants()
 	{
-		$content = self::$faker->sentence;
+		$content = '...are belong to us';
+		$user    = model(UserModel::class)->first();
 
-		$user = (new UserModel())->first();
 		$participant = $this->conversation->addUser($user->id);
-
 		$participant->say($content);
 
 		$messages = $this->conversation->messages;

@@ -1,9 +1,12 @@
 <?php namespace Tatter\Chat\Entities;
 
 use CodeIgniter\Entity;
-use Tatter\Accounts\Entities\Account;
+use Config\Services;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
+use Tatter\Users\UserEntity;
+use Tatter\Users\UserFactory;
+use RuntimeException;
 
 class Participant extends Entity
 {
@@ -14,11 +17,11 @@ class Participant extends Entity
 	];
 
 	/**
-	 * Cached copy of the underlying user account
+	 * Cached copy of the underlying User
 	 *
-	 * @var Account|null
+	 * @var UserEntity|null
 	 */
-	 protected $account;
+	private $user;
 
 	//--------------------------------------------------------------------
 	// Getters
@@ -29,30 +32,42 @@ class Participant extends Entity
 	 *
 	 * @return string
 	 */
-	 public function getUsername(): string
-	 {
-	 	if ($account = $this->account())
-	 	{
-	 		return (string) $account->username;
-	 	}
+	public function getUsername(): string
+	{
+		if ($username = $this->getUser()->getUsername())
+		{
+			return $username;
+		}
 
-		return 'Chatter #' . $this->attributes['id'];
-	 }
+		return isset($this->attributes['id']) ? 'Chatter' . $this->attributes['id'] : 'Chatter';
+	}
 
 	/**
 	 * Returns a full name from the underlying user account
 	 *
 	 * @return string
 	 */
-	 public function getName(): string
-	 {
-	 	if ($account = $this->account())
-	 	{
-	 		return $account->name ?? '';
-	 	}
+	public function getName(): string
+	{
+		return $this->getUser()->getName() ?? $this->getUsername();
+	}
 
-		return '';
-	 }
+	/**
+	 * Returns initials from the underlying user account
+	 *
+	 * @return string
+	 */
+	public function getInitials(): string
+	{
+		$names  = explode(' ', $this->getName());
+		$string = '';
+		foreach ($names as $name)
+		{
+			$string .= $name[0];
+		}
+
+		return strtoupper($string);
+	}
 
 	//--------------------------------------------------------------------
 	// Activities
@@ -63,14 +78,16 @@ class Participant extends Entity
 	 *
 	 * @return $this
 	 */
-	 public function active(): self
-	 {
-	 	$this->attributes['updated_at'] = date('Y-m-d H:i:s');
+	public function active(): self
+	{
+		$this->attributes['updated_at'] = date('Y-m-d H:i:s');
 
-	 	(new ParticipantModel())->update($this->attributes['id'], ['updated_at' => $this->attributes['updated_at']]);
+		model(ParticipantModel::class)->update($this->attributes['id'], [
+			'updated_at' => $this->attributes['updated_at'],
+		]);
 
 		return $this;
-	 }
+	}
 
 	/**
 	 * Creates a new message in the conversation and updates the activity timestamp
@@ -79,57 +96,50 @@ class Participant extends Entity
 	 *
 	 * @return int|null  ID of the new message
 	 */
-	 public function say(string $content): ?int
-	 {
-	 	$data = [
+	public function say(string $content): ?int
+	{
+		$data = [
 			'conversation_id' => $this->attributes['conversation_id'],
 			'participant_id'  => $this->attributes['id'],
 			'content'         => $content,
-	 	];
+		];
 
-		if ($id = (new MessageModel())->insert($data))
+		if ($id = model(MessageModel::class)->insert($data))
 		{
 			$this->active();
 		}
 
 		return $id;
-	 }
+	}
 
 	//--------------------------------------------------------------------
 	// Utilities
 	//--------------------------------------------------------------------
 
 	/**
-	 * Loads and returns the user account for this participant
+	 * Loads and returns the user account for this
+	 * participant using the UserProvider service
 	 *
-	 * @return Account
+	 * @return UserEntity
 	 */
-	 protected function account(): ?Account
-	 {
-	 	if ($this->account)
-	 	{
-	 		return $this->account;
-	 	}
-
-		// Load the handler
-		$handler = config('Chat')->accountHandler;
-		$handler = new $handler();
-		
-		// Get the account
-		if ($this->account = $handler->get($this->attributes['user_id']))
+	private function getUser(): UserEntity
+	{
+		if ($this->user)
 		{
-			return $this->account;
+			return $this->user;
 		}
 
-		// Something went wrong
-		$error = 'Unknown user ID for chat participant: ' . $this->attributes['user_id'];
-		log_message('error', $error);
+		// Load the UserFactory from the provider
+		$users = Services::users();
 
-		if (! config('Chat')->silent)
+		// Get the User
+		if (! $this->user = $users->findById($this->attributes['user_id']))
 		{
-			throw new \RuntimeException($error);
+			$error = 'Unable to locate User ID: ' . $this->attributes['user_id'];
+			log_message('error', $error);
+			throw new RuntimeException($error);
 		}
 
-		return null;
+		return $this->user;
 	}
 }

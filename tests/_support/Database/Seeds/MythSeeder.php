@@ -1,5 +1,6 @@
-<?php namespace ModuleTests\Support\Database\Seeds;
+<?php namespace Tests\Support\Database\Seeds;
 
+use CodeIgniter\Database\Seeder;
 use Myth\Auth\Entities\User;
 
 /**
@@ -7,7 +8,7 @@ use Myth\Auth\Entities\User;
  *
  * Borrowed from Myth:Auth to replicate their test environment.
  */
-class MythSeeder extends \CodeIgniter\Database\Seeder
+class MythSeeder extends Seeder
 {
 	public function run()
 	{
