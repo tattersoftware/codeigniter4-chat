@@ -34,7 +34,12 @@ class Participant extends Entity
 	 */
 	public function getUsername(): string
 	{
-		return $this->getUser()->getUsername() ?? 'Chatter #' . $this->attributes['id'];
+		if ($username = $this->getUser()->getUsername())
+		{
+			return $username;
+		}
+
+		return isset($this->attributes['id']) ? 'Chatter' . $this->attributes['id'] : 'Chatter';
 	}
 
 	/**
@@ -44,7 +49,7 @@ class Participant extends Entity
 	 */
 	public function getName(): string
 	{
-		return $this->getUser()->getName() ?? 'User';
+		return $this->getUser()->getName() ?? $this->getUsername();
 	}
 
 	/**
@@ -61,7 +66,7 @@ class Participant extends Entity
 			$string .= $name[0];
 		}
 
-		return $string;
+		return strtoupper($string);
 	}
 
 	//--------------------------------------------------------------------

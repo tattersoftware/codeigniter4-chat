@@ -1,6 +1,7 @@
 <?php
 
 use Myth\Auth\Models\UserModel;
+use Myth\Auth\Test\Fakers\UserFaker;
 use Tatter\Chat\Entities\Conversation;
 use Tatter\Chat\Entities\Participant;
 use Tatter\Chat\Models\ConversationModel;
@@ -34,10 +35,9 @@ class ParticipantTest extends ModuleTestCase
 		$this->conversation = fake(ConversationModel::class);
 
 		// Add a participant
-		$user = model(UserModel::class)->first();
 		$id   = model(ParticipantModel::class)->insert([
 			'conversation_id' => $this->conversation->id,
-			'user_id'         => $user->id,
+			'user_id'         => 1,
 		]);
 
 		$this->participant = model(ParticipantModel::class)->find($id);
@@ -45,9 +45,30 @@ class ParticipantTest extends ModuleTestCase
 
 	public function testUsernameComesFromAccount()
 	{
-		$user = model(UserModel::class)->first();
+		$user = model(UserModel::class)->find(1);
 
 		$this->assertEquals($user->username, $this->participant->username);
+	}
+
+	public function testGetNameFallsBackOnUsername()
+	{
+		$this->assertEquals('light', $this->participant->name);
+	}
+
+	public function testUsernameNoAccount()
+	{
+		model(UserModel::class)->skipValidation()->update(1, ['username' => null]);
+
+		$this->assertEquals('Chatter1', $this->participant->username);
+	}
+
+	public function testUsernameNoAccountNoId()
+	{
+		model(UserModel::class)->skipValidation()->update(1, ['username' => null]);
+
+		$this->participant->id = null;
+
+		$this->assertEquals('Chatter', $this->participant->username);
 	}
 
 	public function testSayAddsMessage()
