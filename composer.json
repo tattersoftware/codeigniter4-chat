@@ -24,7 +24,7 @@
 		"components/jquery": "^3.3",
 		"tatter/assets": "^2.0",
 		"tatter/users": "^1.0",
-		"twbs/bootstrap": "^4.3"
+		"twbs/bootstrap": "^4.3 || ^5.0"
 	},
 	"require-dev": {
 		"codeigniter4/codeigniter4": "dev-develop",
