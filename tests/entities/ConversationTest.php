@@ -30,6 +30,11 @@ class ConversationTest extends ModuleTestCase
 		$this->assertEquals([], $this->conversation->participants);
 	}
 
+	public function testStartsWithoutMessages()
+	{
+		$this->assertEquals([], $this->conversation->messages);
+	}
+
 	public function testAddUserCreatesParticipant()
 	{
 		$user = model(UserModel::class)->first();
