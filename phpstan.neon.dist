@@ -11,10 +11,12 @@ parameters:
 		- src/Views/*
 	ignoreErrors:
 		- '#Call to an undefined static method Config\\Services::[A-Za-z]+\(\)#'
+		- '#Call to an undefined method CodeIgniter\\Database\\BaseBuilder::first\(\)#'
 		- '#Cannot access property [\$a-z_]+ on (array|object)#'
 		- '#Cannot call method [\$A-Za-z_]+\(\) on (array|object)#'
 	universalObjectCratesClasses:
 		- CodeIgniter\Entity
+		- CodeIgniter\Entity\Entity
 		- Faker\Generator
 	scanDirectories:
 		- vendor/codeigniter4/codeigniter4/system/Helpers
