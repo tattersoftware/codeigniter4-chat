@@ -132,6 +132,12 @@ class Participant extends Entity
 		// Load the UserFactory from the provider
 		$users = Services::users();
 
+		// If this is a Model then ignore soft delete status
+		if (method_exists($users, 'withDeleted'))
+		{
+			$users->withDeleted();
+		}
+
 		// Get the User
 		if (! $this->user = $users->findById($this->attributes['user_id']))
 		{

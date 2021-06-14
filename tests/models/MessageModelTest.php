@@ -39,6 +39,9 @@ class MessageModelTest extends ModuleTestCase
 		$this->assertEquals([], $result);
 	}
 
+	/**
+	 * @timeLimit 1.5
+	 */
 	public function testUnreadReturnsMessages()
 	{
 		$users = model(UserModel::class)->findAll();
@@ -56,6 +59,9 @@ class MessageModelTest extends ModuleTestCase
 		$this->assertInstanceOf(Message::class, $result[0]);
 	}
 
+	/**
+	 * @timeLimit 1.5
+	 */
 	public function testUnreadReturnsIgnoresUnjoined()
 	{
 		$users = model(UserModel::class)->findAll();
@@ -79,6 +85,9 @@ class MessageModelTest extends ModuleTestCase
 		$this->assertCount(1, $result);
 	}
 
+	/**
+	 * @timeLimit 2.5
+	 */
 	public function testUnreadReturnsCorrectCount()
 	{
 		$users = (new UserModel())->findAll();

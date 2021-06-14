@@ -9,7 +9,7 @@ use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
 use Tests\Support\ModuleTestCase;
 
-class ParticipantTest extends ModuleTestCase
+final class ParticipantTest extends ModuleTestCase
 {
 	/**
 	 * A generated Conversation
@@ -28,7 +28,7 @@ class ParticipantTest extends ModuleTestCase
 	/**
 	 * Create a mock Conversation with a Participant
 	 */
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		parent::setUp();
 
@@ -41,6 +41,15 @@ class ParticipantTest extends ModuleTestCase
 		]);
 
 		$this->participant = model(ParticipantModel::class)->find($id);
+	}
+
+	public function testGetUserReturnsDeleted()
+	{
+		$user = model(UserModel::class)->find(1);
+
+		model(UserModel::class)->delete(1);
+
+		$this->assertEquals($user->username, $this->participant->username);
 	}
 
 	public function testUsernameComesFromAccount()
