@@ -6,3 +6,7 @@
 	box-sizing: border-box;
 	resize: none;
 }
+
+.chat-message p {
+	margin-bottom: 0;
+}

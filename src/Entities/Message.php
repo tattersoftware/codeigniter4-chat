@@ -1,6 +1,7 @@
 <?php namespace Tatter\Chat\Entities;
 
 use CodeIgniter\Entity;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 use Tatter\Chat\Entities\Participant;
 use Tatter\Chat\Models\ParticipantModel;
 
@@ -10,6 +11,13 @@ class Message extends Entity
 	protected $casts = [
 		'conversation_id' => 'int',
 		'participant_id'  => 'int',
+	];
+
+	/**
+	 * Initial default values
+	 */
+	protected $attributes = [
+		'content' => '',
 	];
 
 	/**
@@ -24,7 +32,7 @@ class Message extends Entity
 	 *
 	 * @return string
 	 */
-	protected function getContent($format = 'html'): string
+	public function getContent($format = 'html'): string
 	{
 		switch ($format)
 		{
@@ -33,6 +41,12 @@ class Message extends Entity
 
 			case 'json':
 				return json_encode($this->attributes['content']);
+
+			case 'markdown':
+				return (new GithubFlavoredMarkdownConverter([
+					'html_input'         => 'strip',
+					'allow_unsafe_links' => false,
+				]))->convertToHtml($this->attributes['content']);
 
 			case 'raw':
 			default:
