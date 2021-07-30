@@ -16,7 +16,7 @@
 					"
 					data-toggle="tooltip"
 					title="<?= $message->created_at->format('g:i A') ?>"
-				><?= $message->content ?></span>
+				><?= $message->getContent('markdown') ?></span>
 				<span
 					class="
 						chat-avatar
@@ -64,7 +64,7 @@
 					"
 					data-toggle="tooltip"
 					title="<?= $message->created_at->format('g:i A') ?>"
-				><?= $message->content ?></span>
+				><?= $message->getContent('markdown') ?></span>
 			</div>
 			
 			<?php endif; ?>

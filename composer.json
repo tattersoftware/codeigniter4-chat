@@ -22,6 +22,7 @@
         "php": "^7.3 || ^8.0",
         "codeigniter4/authentication-implementation": "1.0",
         "components/jquery": "^3.3",
+        "league/commonmark": "^1.6 || ^2.0",
         "tatter/assets": "^2.0",
         "tatter/users": "^1.0",
         "twbs/bootstrap": "^4.3"
