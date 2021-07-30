@@ -2,6 +2,11 @@
 
 Embedded chat widget for CodeIgniter 4
 
+[![](https://github.com/tattersoftware/codeigniter4-chat/workflows/PHPUnit/badge.svg)](https://github.com/tattersoftware/codeigniter4-chat/actions/workflows/test.yml)
+[![](https://github.com/tattersoftware/codeigniter4-chat/workflows/PHPStan/badge.svg)](https://github.com/tattersoftware/codeigniter4-chat/actions/workflows/analyze.yml)
+[![](https://github.com/tattersoftware/codeigniter4-chat/workflows/Deptrac/badge.svg)](https://github.com/tattersoftware/codeigniter4-chat/actions/workflows/inspect.yml)
+[![Coverage Status](https://coveralls.io/repos/github/tattersoftware/codeigniter4-chat/badge.svg?branch=develop)](https://coveralls.io/github/tattersoftware/codeigniter4-chat?branch=develop)
+
 ## Quick Start
 
 1. Install with Composer: `> composer require tatter/chat`
