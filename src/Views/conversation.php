@@ -6,6 +6,15 @@
 
 			<?php foreach ($conversation->messages as $message): ?>
 
+			<?php if (empty($day) || $day !== $message->created_at->format('n/j/Y')): ?>
+			<?php $day = $message->created_at->format('n/j/Y'); ?>
+			<div class="row">
+				<div class="col-5"><hr></div>
+				<div class="col-2"><?= $day ?></div>
+				<div class="col-5"><hr></div>
+			</div>
+			<?php endif; ?>
+
 			<?= view('Tatter\Chat\Views\message', ['message' => $message]) ?>
 
 			<?php endforeach; ?>
