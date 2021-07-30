@@ -35,7 +35,7 @@ $(".card-body").scrollTop(10000);
 
 // Handle submitting messages via AJAX
 function sendMessage(formElement) {
-	const url = siteUrl + 'chatapi/messages';
+	const url = siteUrl + '/chatapi/messages';
 	const data = new URLSearchParams(new FormData(formElement));
 
 	fetch(url, {

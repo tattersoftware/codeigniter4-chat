@@ -35,7 +35,7 @@ did not install via Composer or you want to publish the assets yourself, move th
 the library's **assets/** directory into your **public/** directory. You can then include them
 in your `<head>` tag or use the **Assets** config file to load them for certain routes:
 
-```
+```php
 	public $routes = [
 		'' => [
 			'vendor/bootstrap/bootstrap.min.css',
@@ -47,7 +47,14 @@ in your `<head>` tag or use the **Assets** config file to load them for certain 
 		],
 ```
 
-If you install assets manually be sure to include Bootstrap.
+If you install assets manually be sure to include Bootstrap. Once the files are in place set
+the site URL with a `<script>` tag in your views or layouts:
+
+```html
+	<script>
+		var baseUrl = "<?= base_url() ?>";
+	</script>
+```
 
 ### Authentication
 
@@ -62,7 +69,7 @@ your own.
 The easiest way to start a chat is with the helper. Load the helper file (`helper('chat')`)
 and then use the `chat($uid, $title)` command wherever you would use a partial view:
 
-```
+```html
 <div id="main">
 	<h3>Yellow Widgets</h3>
 	<p>Main product info here!</p>
