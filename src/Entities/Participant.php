@@ -1,6 +1,7 @@
 <?php namespace Tatter\Chat\Entities;
 
 use CodeIgniter\Entity;
+use CodeIgniter\Events\Events;
 use Config\Services;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
@@ -107,6 +108,9 @@ class Participant extends Entity
 		if ($id = model(MessageModel::class)->insert($data))
 		{
 			$this->active();
+
+			$data['id'] = $id;
+			Events::trigger('chat', $data);
 		}
 
 		return $id;
