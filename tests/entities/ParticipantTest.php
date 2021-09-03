@@ -1,5 +1,6 @@
 <?php
 
+use CodeIgniter\Events\Events;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Test\Fakers\UserFaker;
 use Tatter\Chat\Entities\Conversation;
@@ -89,5 +90,19 @@ final class ParticipantTest extends ModuleTestCase
 		$messages = model(MessageModel::class)->findAll();
 
 		$this->assertEquals($content, $messages[0]->content);
+	}
+
+	public function testSayTriggersEvent()
+	{
+		$test = null;
+
+		Events::on('chat', function ($data) use (&$test) {
+			$test = $data['id'];
+		});
+
+		$content = 'Are belong to us';
+		$result  = $this->participant->say($content);
+
+		$this->assertSame($result, $test);
 	}
 }
