@@ -3,6 +3,7 @@
 namespace Tests\Support;
 
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 use Tests\Support\Database\Seeds\MythSeeder;
 
 /**
@@ -10,7 +11,7 @@ use Tests\Support\Database\Seeds\MythSeeder;
  */
 final class ModuleTestCase extends CIUnitTestCase
 {
-    use \CodeIgniter\Test\DatabaseTestTrait;
+    use DatabaseTestTrait;
 
     /**
      * Should the db be refreshed before test?

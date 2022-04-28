@@ -12,17 +12,12 @@ use Tests\Support\ModuleTestCase;
  */
 final class MessageModelTest extends ModuleTestCase
 {
-    /**
-     * @var MessageModel
-     */
-    private $model;
+    private MessageModel $model;
 
     /**
      * A generated Conversation
-     *
-     * @var Conversation
      */
-    private $conversation;
+    private Conversation $conversation;
 
     /**
      * Set up the model and create a mock conversation

@@ -16,17 +16,13 @@ final class ParticipantTest extends ModuleTestCase
 {
     /**
      * A generated Conversation
-     *
-     * @var Conversation
      */
-    private $conversation;
+    private Conversation $conversation;
 
     /**
      * A generated Participant
-     *
-     * @var Participant
      */
-    private $participant;
+    private Participant $participant;
 
     /**
      * Create a mock Conversation with a Participant

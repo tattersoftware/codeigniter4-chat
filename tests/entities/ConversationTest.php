@@ -12,10 +12,8 @@ final class ConversationTest extends ModuleTestCase
 {
     /**
      * A generated Conversation
-     *
-     * @var Conversation
      */
-    private $conversation;
+    private Conversation $conversation;
 
     /**
      * Create a mock conversation
