@@ -2,7 +2,7 @@
 
 namespace Tatter\Chat\Entities;
 
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 use League\CommonMark\GithubFlavoredMarkdownConverter;
 use Tatter\Chat\Models\ParticipantModel;
 
@@ -46,7 +46,7 @@ class Message extends Entity
                 return (new GithubFlavoredMarkdownConverter([
                     'html_input'         => 'strip',
                     'allow_unsafe_links' => false,
-                ]))->convertToHtml($this->attributes['content']);
+                ]))->convert($this->attributes['content']);
 
             case 'raw':
             default:

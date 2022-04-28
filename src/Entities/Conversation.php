@@ -2,7 +2,7 @@
 
 namespace Tatter\Chat\Entities;
 
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 use RuntimeException;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;

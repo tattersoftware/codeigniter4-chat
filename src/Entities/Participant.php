@@ -2,7 +2,7 @@
 
 namespace Tatter\Chat\Entities;
 
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 use CodeIgniter\Events\Events;
 use Config\Services;
 use RuntimeException;

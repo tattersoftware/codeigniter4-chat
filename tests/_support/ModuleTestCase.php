@@ -9,7 +9,7 @@ use Tests\Support\Database\Seeds\MythSeeder;
 /**
  * @internal
  */
-final class ModuleTestCase extends CIUnitTestCase
+abstract class ModuleTestCase extends CIUnitTestCase
 {
     use DatabaseTestTrait;
 
