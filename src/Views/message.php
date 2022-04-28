@@ -1,5 +1,5 @@
 
-			<?php if ($message->participant->user_id == user_id()): ?>
+			<?php if ($message->participant->user_id === user_id()): ?>
 
 			<div class="chat-row text-right">
 				<span
@@ -66,5 +66,5 @@
 					title="<?= $message->created_at->format('g:i A') ?>"
 				><?= $message->getContent('markdown') ?></span>
 			</div>
-			
+
 			<?php endif; ?>
