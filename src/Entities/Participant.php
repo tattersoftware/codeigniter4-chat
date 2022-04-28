@@ -1,155 +1,145 @@
-<?php namespace Tatter\Chat\Entities;
+<?php
 
-use CodeIgniter\Entity;
+namespace Tatter\Chat\Entities;
+
+use CodeIgniter\Entity\Entity;
 use CodeIgniter\Events\Events;
 use Config\Services;
+use RuntimeException;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
 use Tatter\Users\UserEntity;
 use Tatter\Users\UserFactory;
-use RuntimeException;
 
 class Participant extends Entity
 {
-	protected $table = 'chat_participants';
-	protected $casts = [
-		'conversation_id' => 'int',
-		'user_id'         => 'int',
-	];
+    protected $table = 'chat_participants';
+    protected $casts = [
+        'conversation_id' => 'int',
+        'user_id'         => 'int',
+    ];
 
-	/**
-	 * Cached copy of the underlying User
-	 *
-	 * @var UserEntity|null
-	 */
-	private $user;
+    /**
+     * Cached copy of the underlying User
+     *
+     * @var UserEntity|null
+     */
+    private $user;
 
-	//--------------------------------------------------------------------
-	// Getters
-	//--------------------------------------------------------------------
+    //--------------------------------------------------------------------
+    // Getters
+    //--------------------------------------------------------------------
 
-	/**
-	 * Returns a display name from the underlying user account
-	 *
-	 * @return string
-	 */
-	public function getUsername(): string
-	{
-		if ($username = $this->getUser()->getUsername())
-		{
-			return $username;
-		}
+    /**
+     * Returns a display name from the underlying user account
+     */
+    public function getUsername(): string
+    {
+        if ($username = $this->getUser()->getUsername()) {
+            return $username;
+        }
 
-		return isset($this->attributes['id']) ? 'Chatter' . $this->attributes['id'] : 'Chatter';
-	}
+        return isset($this->attributes['id']) ? 'Chatter' . $this->attributes['id'] : 'Chatter';
+    }
 
-	/**
-	 * Returns a full name from the underlying user account
-	 *
-	 * @return string
-	 */
-	public function getName(): string
-	{
-		return $this->getUser()->getName() ?? $this->getUsername();
-	}
+    /**
+     * Returns a full name from the underlying user account
+     */
+    public function getName(): string
+    {
+        return $this->getUser()->getName() ?? $this->getUsername();
+    }
 
-	/**
-	 * Returns initials from the underlying user account
-	 *
-	 * @return string
-	 */
-	public function getInitials(): string
-	{
-		$names  = explode(' ', $this->getName());
-		$string = '';
-		foreach ($names as $name)
-		{
-			$string .= $name[0];
-		}
+    /**
+     * Returns initials from the underlying user account
+     */
+    public function getInitials(): string
+    {
+        $names  = explode(' ', $this->getName());
+        $string = '';
 
-		return strtoupper($string);
-	}
+        foreach ($names as $name) {
+            $string .= $name[0];
+        }
 
-	//--------------------------------------------------------------------
-	// Activities
-	//--------------------------------------------------------------------
+        return strtoupper($string);
+    }
 
-	/**
-	 * Updates this participant's last activity date
-	 *
-	 * @return $this
-	 */
-	public function active(): self
-	{
-		$this->attributes['updated_at'] = date('Y-m-d H:i:s');
+    //--------------------------------------------------------------------
+    // Activities
+    //--------------------------------------------------------------------
 
-		model(ParticipantModel::class)->update($this->attributes['id'], [
-			'updated_at' => $this->attributes['updated_at'],
-		]);
+    /**
+     * Updates this participant's last activity date
+     *
+     * @return $this
+     */
+    public function active(): self
+    {
+        $this->attributes['updated_at'] = date('Y-m-d H:i:s');
 
-		return $this;
-	}
+        model(ParticipantModel::class)->update($this->attributes['id'], [
+            'updated_at' => $this->attributes['updated_at'],
+        ]);
 
-	/**
-	 * Creates a new message in the conversation and updates the activity timestamp
-	 *
-	 * @param string $content  The content for the new message
-	 *
-	 * @return int|null  ID of the new message
-	 */
-	public function say(string $content): ?int
-	{
-		$data = [
-			'conversation_id' => $this->attributes['conversation_id'],
-			'participant_id'  => $this->attributes['id'],
-			'content'         => $content,
-		];
+        return $this;
+    }
 
-		if ($id = model(MessageModel::class)->insert($data))
-		{
-			$this->active();
+    /**
+     * Creates a new message in the conversation and updates the activity timestamp
+     *
+     * @param string $content The content for the new message
+     *
+     * @return int|null ID of the new message
+     */
+    public function say(string $content): ?int
+    {
+        $data = [
+            'conversation_id' => $this->attributes['conversation_id'],
+            'participant_id'  => $this->attributes['id'],
+            'content'         => $content,
+        ];
 
-			$data['id'] = $id;
-			Events::trigger('chat', $data);
-		}
+        if ($id = model(MessageModel::class)->insert($data)) {
+            $this->active();
 
-		return $id;
-	}
+            $data['id'] = $id;
+            Events::trigger('chat', $data);
+        }
 
-	//--------------------------------------------------------------------
-	// Utilities
-	//--------------------------------------------------------------------
+        return $id;
+    }
 
-	/**
-	 * Loads and returns the user account for this
-	 * participant using the UserProvider service
-	 *
-	 * @return UserEntity
-	 */
-	private function getUser(): UserEntity
-	{
-		if ($this->user)
-		{
-			return $this->user;
-		}
+    //--------------------------------------------------------------------
+    // Utilities
+    //--------------------------------------------------------------------
 
-		// Load the UserFactory from the provider
-		$users = Services::users();
+    /**
+     * Loads and returns the user account for this
+     * participant using the UserProvider service
+     */
+    private function getUser(): UserEntity
+    {
+        if ($this->user) {
+            return $this->user;
+        }
 
-		// If this is a Model then ignore soft delete status
-		if (method_exists($users, 'withDeleted'))
-		{
-			$users->withDeleted();
-		}
+        // Load the UserFactory from the provider
+        $users = Services::users();
 
-		// Get the User
-		if (! $this->user = $users->findById($this->attributes['user_id']))
-		{
-			$error = 'Unable to locate User ID: ' . $this->attributes['user_id'];
-			log_message('error', $error);
-			throw new RuntimeException($error);
-		}
+        // If this is a Model then ignore soft delete status
+        if (method_exists($users, 'withDeleted')) {
+            $users->withDeleted();
+        }
 
-		return $this->user;
-	}
+        // Get the User
+        if (! $this->user = $users->findById($this->attributes['user_id'])) {
+            $error = 'Unable to locate User ID: ' . $this->attributes['user_id'];
+            log_message('error', $error);
+
+            throw new RuntimeException($error);
+        }
+
+        return $this->user;
+    }
 }

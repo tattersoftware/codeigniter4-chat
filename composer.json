@@ -19,18 +19,24 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "codeigniter4/authentication-implementation": "1.0",
         "components/jquery": "^3.3",
-        "league/commonmark": "^1.6 || ^2.0",
+        "league/commonmark": "^2.2",
         "tatter/assets": "^2.0",
         "tatter/users": "^1.0",
         "twbs/bootstrap": "^4.3"
     },
     "require-dev": {
-        "codeigniter4/codeigniter4": "dev-develop",
+        "codeigniter4/framework": "^4.1",
         "myth/auth": "dev-develop",
-        "tatter/tools": "^1.10"
+        "tatter/tools": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -48,10 +54,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/codeigniter4/CodeIgniter4"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/lonnieezell/myth-auth"
         }
     ],
@@ -59,9 +61,20 @@
     "prefer-stable": true,
     "scripts": {
         "analyze": "phpstan analyze",
+        "ci": [
+            "Composer\\Config::disableProcessTimeout",
+            "@deduplicate",
+            "@analyze",
+            "@test",
+            "@inspect",
+            "rector process",
+            "@style"
+        ],
+        "deduplicate": "phpcpd app/ src/",
         "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
         "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
-        "style": "php-cs-fixer fix --verbose --ansi",
+        "retool": "retool",
+        "style": "php-cs-fixer fix --verbose --ansi --using-cache=no",
         "test": "phpunit"
     }
 }
