@@ -1,15 +1,14 @@
 {
     "name": "tatter/chat",
-    "type": "library",
     "description": "Embedded chat widget for CodeIgniter 4",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "codeigniter",
         "codeigniter4",
         "chat",
         "bootstrap"
     ],
-    "homepage": "https://github.com/tattersoftware/codeigniter4-chat",
-    "license": "MIT",
     "authors": [
         {
             "name": "Matthew Gatner",
@@ -18,6 +17,7 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/tattersoftware/codeigniter4-chat",
     "require": {
         "php": "^7.4 || ^8.0",
         "codeigniter4/authentication-implementation": "1.0",
@@ -32,12 +32,14 @@
         "myth/auth": "dev-develop",
         "tatter/tools": "^2.0"
     },
-    "config": {
-        "allow-plugins": {
-            "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lonnieezell/myth-auth"
         }
-    },
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Tatter\\Chat\\": "src"
@@ -51,23 +53,25 @@
             "Tests\\Support\\": "tests/_support"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/lonnieezell/myth-auth"
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
         }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    },
     "scripts": {
-        "analyze": "phpstan analyze",
+        "analyze": [
+            "phpstan analyze",
+            "psalm",
+            "rector process --dry-run"
+        ],
         "ci": [
             "Composer\\Config::disableProcessTimeout",
             "@deduplicate",
             "@analyze",
+            "@composer normalize --dry-run",
             "@test",
             "@inspect",
-            "rector process",
             "@style"
         ],
         "deduplicate": "phpcpd app/ src/",
