@@ -25,7 +25,7 @@ class Conversation extends Entity
         return model(ParticipantModel::class)
             ->where('conversation_id', $this->attributes['id'])
             ->orderBy('created_at', 'asc')
-            ->findAll() ?? [];
+            ->findAll();
     }
 
     /**

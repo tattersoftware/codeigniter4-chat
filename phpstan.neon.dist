@@ -10,7 +10,6 @@ parameters:
 		- src/Config/Routes.php
 		- src/Views/*
 	ignoreErrors:
-		- '#Call to an undefined method CodeIgniter\\Database\\BaseBuilder::(first|findAll)\(\)#'
 		- '#Call to an undefined static method Config\\Services::[A-Za-z]+\(\)#'
 		- '#Cannot access property [\$a-z_]+ on (array|object)#'
 		- '#Cannot call method [\$A-Za-z_]+\(\) on (array|object)#'
