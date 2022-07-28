@@ -1,6 +1,5 @@
 <?php
 
-use Myth\Auth\Models\UserModel;
 use Tatter\Chat\Entities\Conversation;
 use Tatter\Chat\Entities\Message;
 use Tatter\Chat\Models\ConversationModel;
@@ -42,10 +41,11 @@ final class MessageModelTest extends ModuleTestCase
      */
     public function testUnreadReturnsMessages()
     {
-        $users = model(UserModel::class)->findAll();
+        $user1 = $this->fakeUser();
+        $user2 = $this->fakeUser();
 
-        $participant1 = $this->conversation->addUser($users[0]->id);
-        $participant2 = $this->conversation->addUser($users[1]->id);
+        $participant1 = $this->conversation->addUser($user1->id);
+        $participant2 = $this->conversation->addUser($user2->id);
 
         // Delay so the timestamps are different
         sleep(1);
@@ -62,10 +62,11 @@ final class MessageModelTest extends ModuleTestCase
      */
     public function testUnreadReturnsIgnoresUnjoined()
     {
-        $users = model(UserModel::class)->findAll();
+        $user1 = $this->fakeUser();
+        $user2 = $this->fakeUser();
 
-        $participant1 = $this->conversation->addUser($users[0]->id);
-        $participant2 = $this->conversation->addUser($users[1]->id);
+        $participant1 = $this->conversation->addUser($user1->id);
+        $participant2 = $this->conversation->addUser($user2->id);
 
         // Delay so the timestamps are different
         sleep(1);
@@ -75,7 +76,7 @@ final class MessageModelTest extends ModuleTestCase
         // Create another conversation
         $conversation = fake(ConversationModel::class);
 
-        $participant1 = $conversation->addUser($users[0]->id);
+        $participant1 = $conversation->addUser($user1->id);
         $participant1->say('Somebody set us up the bomb!');
 
         $result = $this->model->findUserUnread($participant2->user_id);
@@ -88,10 +89,11 @@ final class MessageModelTest extends ModuleTestCase
      */
     public function testUnreadReturnsCorrectCount()
     {
-        $users = (new UserModel())->findAll();
+        $user1 = $this->fakeUser();
+        $user2 = $this->fakeUser();
 
-        $participant1 = $this->conversation->addUser($users[0]->id);
-        $participant2 = $this->conversation->addUser($users[1]->id);
+        $participant1 = $this->conversation->addUser($user1->id);
+        $participant2 = $this->conversation->addUser($user2->id);
 
         $participant1->say('All your base');
         $participant2->say('...are belong to us');
@@ -101,8 +103,8 @@ final class MessageModelTest extends ModuleTestCase
         // Create another conversation
         $conversation = fake(ConversationModel::class);
 
-        $participant1 = $conversation->addUser($users[0]->id);
-        $participant2 = $conversation->addUser($users[1]->id);
+        $participant1 = $conversation->addUser($user1->id);
+        $participant2 = $conversation->addUser($user2->id);
         sleep(1);
         $participant1->say('Somebody set us up the bomb!');
 
