@@ -1,5 +1,16 @@
 # Upgrade Guide
 
+## Version 2 to 3
+***
+
+* **Chat** is now officially a Tatter Module, so relies on the opinionated frontend tech provided by `Tatter\Frontend`
+* Assets have been integrated into view files; any page that displays a conversation should include the Chat JavaScript, e.g.:
+```html
+    <script>
+		<?= view('Tatter\Chat\Views\javascript') ?>
+    </script>
+```
+
 ## Version 1 to 2
 ***
 

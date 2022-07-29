@@ -9,9 +9,9 @@
 			<?php if (empty($day) || $day !== $message->created_at->format('n/j/Y')): ?>
 			<?php $day = $message->created_at->format('n/j/Y'); ?>
 			<div class="row">
-				<div class="col-5"><hr></div>
-				<div class="col-2"><?= $day ?></div>
-				<div class="col-5"><hr></div>
+				<div class="col-md-4 d-none d-md-inline"><hr></div>
+				<div class="col-md-4 text-center"><?= $day ?></div>
+				<div class="col-md-4"><hr></div>
 			</div>
 			<?php endif; ?>
 
@@ -26,7 +26,14 @@
 			<input name="conversation" type="hidden" value="<?= $conversation->id ?>">
 
 			<div class="input-group d-flex">
-				<textarea class="flex-fill" name="content" data-autoresize rows="1" placeholder="Type your message..." aria-describedby="button-send"></textarea>
+				<textarea
+					class="flex-fill"
+					name="content"
+					data-autoresize
+					rows="1"
+					placeholder="Type your message..."
+					aria-describedby="button-send"
+				></textarea>
 
 				<div class="input-group-append">
 					<input type="submit" class="btn btn-outline-dark" id="button-send" value="Send">
@@ -35,4 +42,18 @@
 		</form>
 	</div>
 
+	<style>
+		.chat-conversation {
+			min-height: 400px;
+		}
+
+		.chat-conversation textarea {
+			box-sizing: border-box;
+			resize: none;
+		}
+
+		.chat-message p {
+			margin-bottom: 0;
+		}
+	</style>
 </div>

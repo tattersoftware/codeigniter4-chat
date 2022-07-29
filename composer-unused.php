@@ -8,9 +8,7 @@ use ComposerUnused\ComposerUnused\Configuration\PatternFilter;
 use Webmozart\Glob\Glob;
 
 return static fn (Configuration $config): Configuration => $config
-    ->addNamedFilter(NamedFilter::fromString('components/jquery'))
-    ->addNamedFilter(NamedFilter::fromString('tatter/assets'))
-    ->addNamedFilter(NamedFilter::fromString('twbs/bootstrap'))
+    ->addNamedFilter(NamedFilter::fromString('tatter/frontend'))
     ->setAdditionalFilesFor('codeigniter4/framework', [
         ...Glob::glob(__DIR__ . '/vendor/codeigniter4/framework/system/Helpers/*.php'),
     ]);

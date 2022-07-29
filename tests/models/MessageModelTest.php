@@ -29,7 +29,7 @@ final class MessageModelTest extends ModuleTestCase
         $this->conversation = fake(ConversationModel::class);
     }
 
-    public function testNoUnreadReturnsArray()
+    public function testNoUnreadReturnsArray(): void
     {
         $result = $this->model->findUserUnread(1);
 
@@ -39,7 +39,7 @@ final class MessageModelTest extends ModuleTestCase
     /**
      * @timeLimit 1.5
      */
-    public function testUnreadReturnsMessages()
+    public function testUnreadReturnsMessages(): void
     {
         $user1 = $this->fakeUser();
         $user2 = $this->fakeUser();
@@ -60,7 +60,7 @@ final class MessageModelTest extends ModuleTestCase
     /**
      * @timeLimit 1.5
      */
-    public function testUnreadReturnsIgnoresUnjoined()
+    public function testUnreadReturnsIgnoresUnjoined(): void
     {
         $user1 = $this->fakeUser();
         $user2 = $this->fakeUser();
@@ -87,7 +87,7 @@ final class MessageModelTest extends ModuleTestCase
     /**
      * @timeLimit 2.5
      */
-    public function testUnreadReturnsCorrectCount()
+    public function testUnreadReturnsCorrectCount(): void
     {
         $user1 = $this->fakeUser();
         $user2 = $this->fakeUser();

@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class CreateChatTables extends Migration
 {
+    /**
+     * @return void
+     */
     public function up()
     {
         // Conversations
@@ -65,6 +68,9 @@ class CreateChatTables extends Migration
         $this->forge->createTable('chat_messages');
     }
 
+    /**
+     * @return void
+     */
     public function down()
     {
         $this->forge->dropTable('chat_conversations');

@@ -20,11 +20,9 @@ class Participant extends Entity
     ];
 
     /**
-     * Cached copy of the underlying User
-     *
-     * @var UserEntity|null
+     * Stored copy of the underlying User
      */
-    private $user;
+    private ?UserEntity $user = null;
 
     //--------------------------------------------------------------------
     // Getters
@@ -90,9 +88,9 @@ class Participant extends Entity
      *
      * @param string $content The content for the new message
      *
-     * @return int|null ID of the new message
+     * @return false|int|object|string ID of the new message
      */
-    public function say(string $content): ?int
+    public function say(string $content)
     {
         $data = [
             'conversation_id' => $this->attributes['conversation_id'],
@@ -120,7 +118,7 @@ class Participant extends Entity
      */
     private function getUser(): UserEntity
     {
-        if ($this->user) {
+        if ($this->user !== null) {
             return $this->user;
         }
 

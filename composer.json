@@ -6,8 +6,7 @@
     "keywords": [
         "codeigniter",
         "codeigniter4",
-        "chat",
-        "bootstrap"
+        "chat"
     ],
     "authors": [
         {
@@ -21,11 +20,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "codeigniter4/authentication-implementation": "1.0",
-        "components/jquery": "^3.3",
-        "league/commonmark": "^2.2",
-        "tatter/assets": "^2.0",
-        "tatter/users": "^1.0",
-        "twbs/bootstrap": "^4.3"
+        "tatter/frontend": "^1.0",
+        "tatter/users": "^1.0"
     },
     "require-dev": {
         "codeigniter4/framework": "^4.1",
