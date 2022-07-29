@@ -26,7 +26,14 @@
 			<input name="conversation" type="hidden" value="<?= $conversation->id ?>">
 
 			<div class="input-group d-flex">
-				<textarea class="flex-fill" name="content" data-autoresize rows="1" placeholder="Type your message..." aria-describedby="button-send"></textarea>
+				<textarea
+					class="flex-fill"
+					name="content"
+					data-autoresize
+					rows="1"
+					placeholder="Type your message..."
+					aria-describedby="button-send"
+				></textarea>
 
 				<div class="input-group-append">
 					<input type="submit" class="btn btn-outline-dark" id="button-send" value="Send">
@@ -35,4 +42,18 @@
 		</form>
 	</div>
 
+	<style>
+		.chat-conversation {
+			min-height: 400px;
+		}
+
+		.chat-conversation textarea {
+			box-sizing: border-box;
+			resize: none;
+		}
+
+		.chat-message p {
+			margin-bottom: 0;
+		}
+	</style>
 </div>
