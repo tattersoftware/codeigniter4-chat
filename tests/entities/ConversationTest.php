@@ -1,6 +1,5 @@
 <?php
 
-use Myth\Auth\Models\UserModel;
 use Tatter\Chat\Entities\Conversation;
 use Tatter\Chat\Models\ConversationModel;
 use Tests\Support\ModuleTestCase;
@@ -37,7 +36,7 @@ final class ConversationTest extends ModuleTestCase
 
     public function testAddUserCreatesParticipant()
     {
-        $user = model(UserModel::class)->first();
+        $user = $this->fakeUser();
         $this->conversation->addUser($user->id);
 
         $participants = $this->conversation->participants;
@@ -49,7 +48,7 @@ final class ConversationTest extends ModuleTestCase
     public function testSayAddsMessage()
     {
         $content = 'All your base';
-        $user    = model(UserModel::class)->first();
+        $user    = $this->fakeUser();
 
         $participant = $this->conversation->addUser($user->id);
         $participant->say($content);
@@ -62,7 +61,7 @@ final class ConversationTest extends ModuleTestCase
     public function testMessagesHaveParticipants()
     {
         $content = '...are belong to us';
-        $user    = model(UserModel::class)->first();
+        $user    = $this->fakeUser();
 
         $participant = $this->conversation->addUser($user->id);
         $participant->say($content);

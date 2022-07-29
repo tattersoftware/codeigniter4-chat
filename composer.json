@@ -29,15 +29,9 @@
     },
     "require-dev": {
         "codeigniter4/framework": "^4.1",
-        "myth/auth": "dev-develop",
+        "tatter/imposter": "^1.0",
         "tatter/tools": "^2.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/lonnieezell/myth-auth"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {

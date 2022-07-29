@@ -1,12 +1,12 @@
 <?php
 
 use CodeIgniter\Events\Events;
-use Myth\Auth\Models\UserModel;
 use Tatter\Chat\Entities\Conversation;
 use Tatter\Chat\Entities\Participant;
 use Tatter\Chat\Models\ConversationModel;
 use Tatter\Chat\Models\MessageModel;
 use Tatter\Chat\Models\ParticipantModel;
+use Tatter\Imposter\Entities\User;
 use Tests\Support\ModuleTestCase;
 
 /**
@@ -14,6 +14,11 @@ use Tests\Support\ModuleTestCase;
  */
 final class ParticipantTest extends ModuleTestCase
 {
+    /**
+     * A generated User
+     */
+    private User $user;
+
     /**
      * A generated Conversation
      */
@@ -31,49 +36,52 @@ final class ParticipantTest extends ModuleTestCase
     {
         parent::setUp();
 
+        $this->user         = $this->fakeUser();
         $this->conversation = fake(ConversationModel::class);
 
         // Add a participant
         $id = model(ParticipantModel::class)->insert([
             'conversation_id' => $this->conversation->id,
-            'user_id'         => 1,
+            'user_id'         => $this->user->id,
         ]);
 
         $this->participant = model(ParticipantModel::class)->find($id);
     }
 
-    public function testGetUserReturnsDeleted()
-    {
-        $user = model(UserModel::class)->find(1);
+    /*
+        // Imposter does not support withDeleted()
+        public function testGetUserReturnsDeleted()
+        {
+            $user = model(UserModel::class)->find(1);
 
-        model(UserModel::class)->delete(1);
+            model(UserModel::class)->delete(1);
 
-        $this->assertSame($user->username, $this->participant->username);
-    }
+            $this->assertSame($user->username, $this->participant->username);
+        }
+    */
 
     public function testUsernameComesFromAccount()
     {
-        $user = model(UserModel::class)->find(1);
-
-        $this->assertSame($user->username, $this->participant->username);
+        $this->assertSame($this->user->username, $this->participant->username);
     }
 
     public function testGetNameFallsBackOnUsername()
     {
-        $this->assertSame('light', $this->participant->name);
+        $this->user->name = null;
+
+        $this->assertSame($this->user->username, $this->participant->name);
     }
 
     public function testUsernameNoAccount()
     {
-        model(UserModel::class)->skipValidation()->update(1, ['username' => null]);
+        $this->user->username = null;
 
         $this->assertSame('Chatter1', $this->participant->username);
     }
 
     public function testUsernameNoAccountNoId()
     {
-        model(UserModel::class)->skipValidation()->update(1, ['username' => null]);
-
+        $this->user->username  = null;
         $this->participant->id = null;
 
         $this->assertSame('Chatter', $this->participant->username);
