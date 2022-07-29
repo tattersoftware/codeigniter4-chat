@@ -60,26 +60,26 @@ final class ParticipantTest extends ModuleTestCase
         }
     */
 
-    public function testUsernameComesFromAccount()
+    public function testUsernameComesFromAccount(): void
     {
         $this->assertSame($this->user->username, $this->participant->username);
     }
 
-    public function testGetNameFallsBackOnUsername()
+    public function testGetNameFallsBackOnUsername(): void
     {
         $this->user->name = null;
 
         $this->assertSame($this->user->username, $this->participant->name);
     }
 
-    public function testUsernameNoAccount()
+    public function testUsernameNoAccount(): void
     {
         $this->user->username = null;
 
         $this->assertSame('Chatter1', $this->participant->username);
     }
 
-    public function testUsernameNoAccountNoId()
+    public function testUsernameNoAccountNoId(): void
     {
         $this->user->username  = null;
         $this->participant->id = null;
@@ -87,7 +87,7 @@ final class ParticipantTest extends ModuleTestCase
         $this->assertSame('Chatter', $this->participant->username);
     }
 
-    public function testSayAddsMessage()
+    public function testSayAddsMessage(): void
     {
         $content = 'All your base';
 
@@ -98,7 +98,7 @@ final class ParticipantTest extends ModuleTestCase
         $this->assertSame($content, $messages[0]->content);
     }
 
-    public function testSayTriggersEvent()
+    public function testSayTriggersEvent(): void
     {
         $test = null;
 

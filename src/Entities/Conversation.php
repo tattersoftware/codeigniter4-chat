@@ -94,11 +94,9 @@ class Conversation extends Entity
         }
 
         // Something went wrong
-        // @codeCoverageIgnoreStart
         $error = "Unable to add user {$userId} to conversation: " . $this->attributes['id'];
         log_message('error', $error);
 
         throw new RuntimeException($error);
-        // @codeCoverageIgnoreEnd
     }
 }

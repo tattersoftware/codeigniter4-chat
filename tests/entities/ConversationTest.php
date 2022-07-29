@@ -24,17 +24,17 @@ final class ConversationTest extends ModuleTestCase
         $this->conversation = fake(ConversationModel::class);
     }
 
-    public function testStartsWithoutParticipants()
+    public function testStartsWithoutParticipants(): void
     {
         $this->assertSame([], $this->conversation->participants);
     }
 
-    public function testStartsWithoutMessages()
+    public function testStartsWithoutMessages(): void
     {
         $this->assertSame([], $this->conversation->messages);
     }
 
-    public function testAddUserCreatesParticipant()
+    public function testAddUserCreatesParticipant(): void
     {
         $user = $this->fakeUser();
         $this->conversation->addUser($user->id);
@@ -45,7 +45,7 @@ final class ConversationTest extends ModuleTestCase
         $this->assertSame($user->username, $participants[0]->username);
     }
 
-    public function testSayAddsMessage()
+    public function testSayAddsMessage(): void
     {
         $content = 'All your base';
         $user    = $this->fakeUser();
@@ -58,7 +58,7 @@ final class ConversationTest extends ModuleTestCase
         $this->assertSame($content, $messages[0]->content);
     }
 
-    public function testMessagesHaveParticipants()
+    public function testMessagesHaveParticipants(): void
     {
         $content = '...are belong to us';
         $user    = $this->fakeUser();

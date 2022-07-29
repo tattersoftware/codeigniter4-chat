@@ -23,10 +23,8 @@ class Message extends Entity
 
     /**
      * Stored copy of the sending Participant.
-     *
-     * @var Participant|null
      */
-    private $participant;
+    private ?Participant $participant = null;
 
     /**
      * Returns the message content with optional formatting.
@@ -71,7 +69,7 @@ class Message extends Entity
      */
     protected function getParticipant(): ?Participant
     {
-        if (null === $this->participant) {
+        if ($this->participant === null) {
             $this->participant = model(ParticipantModel::class)->find($this->attributes['participant_id']);
         }
 
