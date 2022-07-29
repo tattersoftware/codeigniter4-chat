@@ -9,9 +9,9 @@
 			<?php if (empty($day) || $day !== $message->created_at->format('n/j/Y')): ?>
 			<?php $day = $message->created_at->format('n/j/Y'); ?>
 			<div class="row">
-				<div class="col-5"><hr></div>
-				<div class="col-2"><?= $day ?></div>
-				<div class="col-5"><hr></div>
+				<div class="col-md-4 d-none d-md-inline"><hr></div>
+				<div class="col-md-4 text-center"><?= $day ?></div>
+				<div class="col-md-4"><hr></div>
 			</div>
 			<?php endif; ?>
 
